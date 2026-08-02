@@ -61,3 +61,14 @@ OpenAPI is available in Development at `/openapi/v1.json`.
 ```powershell
 dotnet test
 ```
+
+## Deploy to Render
+
+This repo includes a Dockerfile and `render.yaml` blueprint for a Render Web Service.
+
+1. Push the repo to GitHub.
+2. In Render, create a new Blueprint from this GitHub repo. Render will use `render.yaml`.
+3. After the service is created, copy its Deploy Hook URL from the Render service settings.
+4. In GitHub, add a repository secret named `RENDER_DEPLOY_HOOK_URL` with that deploy hook URL.
+
+Pushes to `main` run the GitHub Actions workflow. If restore, build, and tests pass, the workflow triggers a Render deploy.
