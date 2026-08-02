@@ -5,6 +5,8 @@ It does not represent any real company, employer, client, product, architecture,
 
 The sample models a generic B2B partner platform where partners can view products, manage their own orders, analytics partners can read aggregated summaries, and compliance users can review audit events.
 
+The repo also includes a minimal Angular explorer in `frontend/`. It lets learners switch demo roles, send real API requests, and see the status code, correlation id, response body, and audit trail produced by the middleware pipeline.
+
 ## Middleware Use Cases
 
 - `ApiKeyAuthenticationMiddleware` validates `X-Api-Key`, creates a request identity, and returns `401` for missing or invalid keys.
@@ -56,10 +58,41 @@ dotnet run --project PartnerDataSharing.Api
 
 OpenAPI is available in Development at `/openapi/v1.json`.
 
+## Explore with Angular UI
+
+Start the API first:
+
+```powershell
+dotnet run --project PartnerDataSharing.Api
+```
+
+In a second terminal, start the Angular explorer:
+
+```powershell
+cd frontend
+npm start
+```
+
+Open `http://localhost:4200`. The Angular dev server proxies `/health` and `/api` requests to `http://localhost:5080`, so the API does not need CORS changes for local learning.
+
+Useful learner scenarios:
+
+- Select `RetailPartner` and call products or own orders to see allowed requests.
+- Select `RetailPartner` and call blocked partner orders to see tenant isolation return `403`.
+- Call missing API key to see authentication return `401`.
+- Call analytics, then audit events, to see audited protected API access.
+
 ## Test
 
 ```powershell
 dotnet test
+```
+
+To build the Angular explorer:
+
+```powershell
+cd frontend
+npm run build
 ```
 
 ## Deploy to Render

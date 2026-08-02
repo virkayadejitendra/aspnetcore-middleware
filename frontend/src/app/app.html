@@ -1,0 +1,132 @@
+<main class="shell">
+  <section class="toolbar">
+    <div>
+      <p class="eyebrow">ASP.NET Core middleware demo</p>
+      <h1>Partner data sharing explorer</h1>
+    </div>
+    <button type="button" class="primary" (click)="runSelectedRequest()" [disabled]="busy()">
+      {{ busy() ? 'Sending...' : 'Send request' }}
+    </button>
+  </section>
+
+  <section class="workspace">
+    <aside class="panel controls">
+      <h2>Client role</h2>
+      <div class="client-list">
+        @for (client of clients; track client.apiKey; let index = $index) {
+          <button
+            type="button"
+            class="client"
+            [class.active]="selectedClientIndex() === index"
+            (click)="chooseClient(index)"
+          >
+            <span>{{ client.role }}</span>
+            <small>{{ client.name }}</small>
+          </button>
+        }
+      </div>
+
+      <div class="detail-block">
+        <span>API key</span>
+        <code>{{ selectedClient().apiKey }}</code>
+      </div>
+      <div class="detail-block">
+        <span>Partner id</span>
+        <code>{{ selectedClient().partnerId || 'none' }}</code>
+      </div>
+      <p class="purpose">{{ selectedClient().purpose }}</p>
+    </aside>
+
+    <section class="panel endpoint-panel">
+      <div class="section-title">
+        <h2>Requests</h2>
+        <button type="button" class="ghost" (click)="refreshCorrelationId()">New correlation id</button>
+      </div>
+
+      <div class="endpoint-grid">
+        @for (endpoint of endpoints; track endpoint.id) {
+          <button
+            type="button"
+            class="endpoint"
+            [class.active]="selectedEndpointId() === endpoint.id"
+            (click)="chooseEndpoint(endpoint)"
+          >
+            <span>{{ endpoint.label }}</span>
+            <code>{{ endpoint.method }}</code>
+          </button>
+        }
+      </div>
+
+      <div class="request-summary">
+        <div>
+          <span>Method</span>
+          <code>{{ selectedEndpoint().method }}</code>
+        </div>
+        <div>
+          <span>URL</span>
+          <code>{{ selectedEndpoint().path }}</code>
+        </div>
+        <div>
+          <span>Focus</span>
+          <p>{{ selectedEndpoint().middlewareFocus }}</p>
+        </div>
+      </div>
+
+      @if (selectedEndpoint().id === 'create-order') {
+        <div class="form-row">
+          <label>
+            Product
+            <select [ngModel]="productId()" (ngModelChange)="productId.set($event)">
+              <option value="PROD-001">PROD-001</option>
+              <option value="PROD-002">PROD-002</option>
+              <option value="PROD-003">PROD-003</option>
+            </select>
+          </label>
+          <label>
+            Quantity
+            <input type="number" min="1" [ngModel]="quantity()" (ngModelChange)="quantity.set(+$event)" />
+          </label>
+        </div>
+      }
+
+      <div class="code-pair">
+        <div>
+          <h3>Headers</h3>
+          <pre>{{ formatJson(requestHeaders()) }}</pre>
+        </div>
+        <div>
+          <h3>Body</h3>
+          <pre>{{ requestBody() ? formatJson(requestBody()) : 'null' }}</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel response-panel">
+      <div class="section-title">
+        <h2>Response</h2>
+        @if (result()) {
+          <span class="status" [class.error]="result()?.error">{{ result()?.status }} {{ result()?.statusText }}</span>
+        }
+      </div>
+
+      <div class="flow">
+        <div>API key auth</div>
+        <div>Audit timing</div>
+        <div>Partner access</div>
+        <div>Controller</div>
+      </div>
+
+      @if (result()) {
+        <div class="detail-block">
+          <span>Response correlation id</span>
+          <code>{{ result()?.correlationId || 'none' }}</code>
+        </div>
+        <pre class="response-body">{{ formatJson(result()?.body) }}</pre>
+      } @else {
+        <div class="empty-state">
+          Choose a role and request, then send it to see the middleware outcome.
+        </div>
+      }
+    </section>
+  </section>
+</main>
