@@ -1,0 +1,372 @@
+{
+  "info": {
+    "_postman_id": "d3b9c3f6-0a19-4a1b-8e2d-7d9c03c3d001",
+    "name": "Partner Data Sharing Middleware Demo",
+    "description": "Fictional ASP.NET Core custom middleware demo for API key authentication, partner access control, and data-sharing audit logging.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5080"
+    },
+    {
+      "key": "retailApiKey",
+      "value": "retail-demo-key"
+    },
+    {
+      "key": "distributorApiKey",
+      "value": "distributor-demo-key"
+    },
+    {
+      "key": "analyticsApiKey",
+      "value": "analytics-demo-key"
+    },
+    {
+      "key": "complianceApiKey",
+      "value": "compliance-demo-key"
+    },
+    {
+      "key": "adminApiKey",
+      "value": "admin-demo-key"
+    },
+    {
+      "key": "retailPartnerId",
+      "value": "PARTNER-RETAIL-001"
+    },
+    {
+      "key": "distributorPartnerId",
+      "value": "PARTNER-DIST-001"
+    },
+    {
+      "key": "correlationId",
+      "value": "postman-demo-001"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health - No API Key Required",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products and Inventory",
+      "item": [
+        {
+          "name": "Get Products - Retail Partner",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{retailApiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Inventory - Distributor Partner",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{distributorApiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/inventory",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "inventory"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Partner Orders",
+      "item": [
+        {
+          "name": "Get Retail Partner Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{retailApiKey}}"
+              },
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{correlationId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/partners/{{retailPartnerId}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "partners",
+                "{{retailPartnerId}}",
+                "orders"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Retail Partner Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{retailApiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"PROD-001\",\n  \"quantity\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/partners/{{retailPartnerId}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "partners",
+                "{{retailPartnerId}}",
+                "orders"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Distributor Partner Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{distributorApiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"PROD-003\",\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/partners/{{distributorPartnerId}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "partners",
+                "{{distributorPartnerId}}",
+                "orders"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics and Compliance",
+      "item": [
+        {
+          "name": "Get Aggregated Sales Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{analyticsApiKey}}"
+              },
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{correlationId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/analytics/sales-summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "analytics",
+                "sales-summary"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Audit Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{complianceApiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/compliance/audit-events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "compliance",
+                "audit-events"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Negative Middleware Tests",
+      "item": [
+        {
+          "name": "Missing API Key Returns 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Invalid API Key Returns 401",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "invalid-demo-key"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Retail Partner Accessing Distributor Orders Returns 403",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{retailApiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/partners/{{distributorPartnerId}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "partners",
+                "{{distributorPartnerId}}",
+                "orders"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analytics Partner Accessing Partner Orders Returns 403",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{analyticsApiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/partners/{{retailPartnerId}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "partners",
+                "{{retailPartnerId}}",
+                "orders"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

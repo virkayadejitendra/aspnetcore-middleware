@@ -1,0 +1,31 @@
+@PartnerDataSharing.Api_HostAddress = http://localhost:5080
+
+GET {{PartnerDataSharing.Api_HostAddress}}/health
+Accept: application/json
+
+###
+
+GET {{PartnerDataSharing.Api_HostAddress}}/api/products
+Accept: application/json
+X-Api-Key: retail-demo-key
+
+###
+
+GET {{PartnerDataSharing.Api_HostAddress}}/api/partners/PARTNER-RETAIL-001/orders
+Accept: application/json
+X-Api-Key: retail-demo-key
+X-Correlation-Id: demo-correlation-001
+
+###
+
+GET {{PartnerDataSharing.Api_HostAddress}}/api/analytics/sales-summary
+Accept: application/json
+X-Api-Key: analytics-demo-key
+
+###
+
+GET {{PartnerDataSharing.Api_HostAddress}}/api/compliance/audit-events
+Accept: application/json
+X-Api-Key: compliance-demo-key
+
+###

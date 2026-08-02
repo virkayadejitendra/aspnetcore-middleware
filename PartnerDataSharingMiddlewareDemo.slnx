@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="PartnerDataSharing.Api.Tests/PartnerDataSharing.Api.Tests.csproj" />
+  <Project Path="PartnerDataSharing.Api/PartnerDataSharing.Api.csproj" />
+</Solution>
